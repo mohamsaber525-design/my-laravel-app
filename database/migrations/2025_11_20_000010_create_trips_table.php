@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->longText('description')->nullable();
 
             $table->boolean('available')->default(true);
-
+            $table->string('image');
             $table->timestamps();
         });
     }

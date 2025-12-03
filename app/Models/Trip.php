@@ -9,7 +9,7 @@ class Trip extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+    protected $fillable = [ // Champs pouvant être assignés en masse
         'title',
         'slug',
         'category_id',
