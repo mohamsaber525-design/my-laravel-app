@@ -1,0 +1,23 @@
+﻿
+
+   Symfony\Component\Process\Exception\RuntimeException 
+
+  The provided cwd "C:\Users\dell\OneDrive\Bureau\projects\11111111111\my-laravel-app\public" does not exist.
+
+  at vendor\symfony\process\Process.php:341
+    337Ôûò             }
+    338Ôûò         }
+    339Ôûò 
+    340Ôûò         if (!is_dir($this->cwd)) {
+  Ô×£ 341Ôûò             throw new RuntimeException(\sprintf('The provided cwd "%s" does not exist.', $this->cwd));
+    342Ôûò         }
+    343Ôûò 
+    344Ôûò         $lastError = null;
+    345Ôûò         set_error_handler(function ($type, $msg) use (&$lastError) {
+
+  1   vendor\laravel\framework\src\Illuminate\Foundation\Console\ServeCommand.php:198
+      Symfony\Component\Process\Process::start(Object(Closure))
+
+  2   vendor\laravel\framework\src\Illuminate\Foundation\Console\ServeCommand.php:137
+      Illuminate\Foundation\Console\ServeCommand::startProcess()
+
