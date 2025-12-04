@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Calendar, Users, Star, Loader } from 'lucide-react';
 import { tripsAPI } from '../services/api';
+import Navbar from '../components/Navbar';
+
 
 const VoyagesPage = () => {
   const [trips, setTrips] = useState([]);
@@ -42,6 +44,8 @@ const VoyagesPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+          <Navbar />
+
       <div className="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold mb-3">Tous nos voyages</h1>

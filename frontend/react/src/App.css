@@ -40,6 +40,7 @@ body {
   min-height: 100vh;
 }
 
+
 /* Liens sans soulignement par défaut */
 a {
   text-decoration: none;
@@ -172,15 +173,15 @@ button:disabled {
 
 @keyframes gradientShift {
   0% {
-    background-position: 0% 50%;
+    background-position: 100% 100%;
   }
 
   50% {
-    background-position: 100% 50%;
+    background-position: 100% 100%;
   }
 
   100% {
-    background-position: 0% 50%;
+    background-position: 100% 100%;
   }
 }
 

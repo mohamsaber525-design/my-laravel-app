@@ -488,9 +488,12 @@ const TripDetailPage = () => {
                 </div>
               </div>
 
-              <button className="w-full bg-orange-600 text-white py-4 rounded-lg font-semibold hover:bg-orange-700 transition mb-3">
+              <a
+                href={`/reservation/${voyage.id}`}
+                className="block w-full bg-orange-600 text-white py-4 rounded-lg font-semibold hover:bg-orange-700 transition mb-3 text-center"
+              >
                 Réserver maintenant
-              </button>
+              </a>
               <button className="w-full bg-white border-2 border-orange-600 text-orange-600 py-4 rounded-lg font-semibold hover:bg-orange-50 transition">
                 Demander un devis
               </button>

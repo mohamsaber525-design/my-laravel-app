@@ -73,7 +73,7 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header simple */}
+       
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <a href="/" className="flex items-center space-x-2">
@@ -83,7 +83,7 @@ const LoginPage = () => {
             <span className="text-xl font-bold text-gray-800">TouriMaroc</span>
           </a>
         </div>
-      </header>
+      </header> 
 
       {/* Contenu principal */}
       <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

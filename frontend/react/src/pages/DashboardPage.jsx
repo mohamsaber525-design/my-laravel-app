@@ -5,6 +5,8 @@ import {
 } from 'lucide-react';
 import { reservationsAPI, authAPI } from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -92,6 +94,7 @@ const DashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Navbar />
       <section className="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold mb-2">

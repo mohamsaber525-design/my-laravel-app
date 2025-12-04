@@ -9,14 +9,13 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Check if user is logged in
+  // Vérifier si l'utilisateur est connecté
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem('auth_token');
       setIsAuthenticated(!!token);
     };
     checkAuth();
-    // Re-check on every location change
   }, [location]);
 
   const handleLogout = async () => {
@@ -41,55 +40,50 @@ const Navbar = () => {
     setMenuOpen(false);
   };
 
-  // Fonction pour vérifier si un lien est actif
   const isActive = (path) => location.pathname === path;
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      {/* NAV FULL WIDTH FIXED */}
+      <nav className="w-full px-4 sm:px-6 lg:px-8">
+        {/* CONTENU CENTRÉ */}
+        <div className="max-w-7xl mx-auto flex justify-between items-center h-16">
+          
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="bg-orange-600 text-white p-2 rounded-lg font-bold text-xl">
               TM
             </div>
-            <span className="text-xl font-bold text-gray-800">TouriMaroc</span>
+            <span className="text-xl font-bold text-gray-800">
+              TouriMaroc
+            </span>
           </Link>
 
           {/* Navigation Desktop */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex space-xl-8">
             <Link
               to="/"
-              className={`${isActive('/')
-                ? 'text-orange-600 font-medium'
-                : 'text-gray-600 hover:text-orange-600'
-                } transition`}
+              className={`${isActive('/') ? 'text-orange-600 font-medium' : 'text-gray-600 hover:text-orange-600'} transition`}
             >
               Accueil
             </Link>
             <Link
               to="/voyages"
-              className={`${isActive('/voyages')
-                ? 'text-orange-600 font-medium'
-                : 'text-gray-600 hover:text-orange-600'
-                } transition`}
+              className={`${isActive('/voyages') ? 'text-orange-600 font-medium' : 'text-gray-600 hover:text-orange-600'} transition`}
             >
               Voyages
             </Link>
             {isAuthenticated && (
               <Link
                 to="/dashboard"
-                className={`${isActive('/dashboard')
-                  ? 'text-orange-600 font-medium'
-                  : 'text-gray-600 hover:text-orange-600'
-                  } transition`}
+                className={`${isActive('/dashboard') ? 'text-orange-600 font-medium' : 'text-gray-600 hover:text-orange-600'} transition`}
               >
                 Mon Tableau de Bord
               </Link>
             )}
           </div>
 
-          {/* Bouton Connexion/Déconnexion */}
+          {/* Connexion / Déconnexion */}
           <div className="hidden md:block">
             <button
               onClick={handleAuthClick}
@@ -107,10 +101,7 @@ const Navbar = () => {
           </div>
 
           {/* Menu Mobile Toggle */}
-          <button
-            className="md:hidden"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
+          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X /> : <Menu />}
           </button>
         </div>
@@ -120,20 +111,14 @@ const Navbar = () => {
           <div className="md:hidden py-4 space-y-3">
             <Link
               to="/"
-              className={`block ${isActive('/')
-                ? 'text-orange-600 font-medium'
-                : 'text-gray-600'
-                }`}
+              className={`block ${isActive('/') ? 'text-orange-600 font-medium' : 'text-gray-600'}`}
               onClick={() => setMenuOpen(false)}
             >
               Accueil
             </Link>
             <Link
               to="/voyages"
-              className={`block ${isActive('/voyages')
-                ? 'text-orange-600 font-medium'
-                : 'text-gray-600'
-                }`}
+              className={`block ${isActive('/voyages') ? 'text-orange-600 font-medium' : 'text-gray-600'}`}
               onClick={() => setMenuOpen(false)}
             >
               Voyages
@@ -141,10 +126,7 @@ const Navbar = () => {
             {isAuthenticated && (
               <Link
                 to="/dashboard"
-                className={`block ${isActive('/dashboard')
-                  ? 'text-orange-600 font-medium'
-                  : 'text-gray-600'
-                  }`}
+                className={`block ${isActive('/dashboard') ? 'text-orange-600 font-medium' : 'text-gray-600'}`}
                 onClick={() => setMenuOpen(false)}
               >
                 Mon Tableau de Bord

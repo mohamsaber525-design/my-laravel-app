@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Search, MapPin, Calendar, Users, Shield, Award, Clock, Heart, Loader, Star, ChevronRight, Form } from 'lucide-react';
+import { Search, MapPin, Calendar, Users, Shield, Award, Clock, Heart, Loader, Star, ChevronRight, TrendingUp } from 'lucide-react';
+import Navbar from '../components/Navbar';
+
 
 const HomePage = () => {
   const [trips, setTrips] = useState([]);
@@ -9,14 +11,11 @@ const HomePage = () => {
     const fetchFeaturedTrips = async () => {
       try {
         setIsLoading(true);
-        // Remplacez cette URL par votre endpoint backend
         const response = await fetch('http://localhost:8000/api/trips');
         const data = await response.json();
-        // Take only first 3 trips for featured section
         setTrips(Array.isArray(data) ? data.slice(0, 3) : []);
       } catch (err) {
         console.error('Error fetching trips:', err);
-        // Keep empty array on error, don't show error on homepage
       } finally {
         setIsLoading(false);
       }
@@ -27,7 +26,7 @@ const HomePage = () => {
   const stats = [
     { nombre: "500+", label: "Voyages organisés", icon: MapPin },
     { nombre: "15K+", label: "Clients satisfaits", icon: Users },
-    { nombre: "12", label: "Régions couvertes", icon: MapPin },
+    { nombre: "12", label: "Régions couvertes", icon: TrendingUp },
     { nombre: "24/7", label: "Support client", icon: Clock }
   ];
 
@@ -46,79 +45,76 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - Amélioré */}
-      <section className="relative h-screen min-h-[700px] overflow-hidden">
-        {/* Background avec overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900">
+      <Navbar />
+      {/* Hero Section avec vrai background */}
+      <section className="relative h-screen min-h-[700px] flex items-center overflow-hidden">
+        {/* Background image avec overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-gray-800/90 to-orange-900/90">
           <div
-            className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay"
+            className="absolute inset-0 bg-cover bg-center opacity-40"
             style={{
               backgroundImage: "url('https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=1600')"
             }}
           />
         </div>
 
-        {/* Contenu centré */}
-        <div className="relative h-full flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div className="max-w-4xl">
-              {/* Badge */}
-              <div className="inline-flex items-center bg-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-full px-4 py-2 mb-8">
-                <Star className="w-4 h-4 text-orange-400 mr-2" />
-                <span className="text-orange-200 text-sm font-medium">Élu meilleur tour opérateur 2024</span>
-              </div>
+        {/* Contenu Hero */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="max-w-4xl">
+            {/* Badge */}
+            <div className="inline-flex items-center bg-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-full px-5 py-2 mb-8 animate-fade-in">
+              <Star className="w-5 h-5 text-orange-400 mr-2 fill-current" />
+              <span className="text-orange-200 text-sm font-semibold">Élu meilleur tour opérateur 2024</span>
+            </div>
 
-              <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-                Découvrez le Maroc
-                <span className="block text-orange-400 mt-2">Autrement</span>
-              </h1>
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+              Découvrez le Maroc
+              <span className="block text-orange-400 mt-3">Autrement</span>
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl leading-relaxed">
+              Explorez les merveilles du royaume chérifien avec nos voyages organisés authentiques
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href="/voyages"
+                className="bg-gradient-to-r from-orange-600 to-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:from-orange-700 hover:to-orange-600 transition-all transform hover:scale-105 flex items-center justify-center shadow-2xl shadow-orange-600/40"
+              >
+                <Search className="w-5 h-5 mr-2" />
+                Découvrir nos voyages
+              </a>
               
-              <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl leading-relaxed">
-                Explorez les merveilles du royaume chérifien avec nos voyages organisés authentiques et personnalisés
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a
-                  href="/voyages"
-                  className="bg-orange-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-orange-700 transition-all transform hover:scale-105 flex items-center justify-center shadow-xl shadow-orange-600/30 no-underline"
-                >
-                  <Search className="w-5 h-5 mr-2" />
-                  Découvrir nos voyages
-                </a>
-                
-                <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/20 transition-all border border-white/20 flex items-center justify-center">
-                  Demander un devis
-                  <ChevronRight className="w-5 h-5 ml-2" />
-                </button>
-              </div>
+              <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/20 transition-all border border-white/30 flex items-center justify-center">
+                Demander un devis
+                <ChevronRight className="w-5 h-5 ml-2" />
+              </button>
             </div>
           </div>
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-          <div className="animate-bounce">
-            <ChevronRight className="w-6 h-6 text-white rotate-90" />
-          </div>
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <ChevronRight className="w-6 h-6 text-white rotate-90" />
         </div>
       </section>
 
-      {/* Statistiques - Design amélioré */}
-      <section className="relative -mt-20 z-10 px-4 sm:px-6 lg:px-8">
+      {/* Statistiques - Cards flottantes */}
+      <section className="relative -mt-24 z-20 px-4 sm:px-6 lg:px-8 mb-24">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12">
+          <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 border border-gray-100">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {stats.map((stat, index) => (
-                <div key={index} className="text-center relative group">
+                <div key={index} className="text-center group">
                   <div className="flex justify-center mb-4">
-                    <div className="bg-orange-50 p-4 rounded-xl group-hover:bg-orange-100 transition-colors">
+                    <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-5 rounded-2xl group-hover:from-orange-100 group-hover:to-orange-200 transition-all transform group-hover:scale-110 shadow-lg">
                       <stat.icon className="w-8 h-8 text-orange-600" />
                     </div>
                   </div>
                   <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-2">
                     {stat.nombre}
                   </div>
-                  <div className="text-gray-600 font-medium">{stat.label}</div>
+                  <div className="text-gray-600 font-medium text-sm md:text-base">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -126,12 +122,13 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Voyages à la une - Cards améliorées */}
-      <section id="voyages" className="py-24 bg-gradient-to-b from-white to-gray-50">
+      {/* Section Voyages à la une */}
+      <section id="voyages" className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header centré */}
           <div className="text-center mb-16">
-            <span className="text-orange-600 font-semibold text-sm uppercase tracking-wider">Nos Destinations</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-3 mb-4">Voyages à la une</h2>
+            <span className="text-orange-600 font-bold text-sm uppercase tracking-wider mb-3 block">NOS DESTINATIONS</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Voyages à la une</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Découvrez notre sélection de voyages exceptionnels à travers le Maroc
             </p>
@@ -143,9 +140,9 @@ const HomePage = () => {
               <p className="mt-4 text-gray-600">Chargement des voyages...</p>
             </div>
           ) : trips.length === 0 ? (
-            <div className="text-center py-12">
+            <div className="text-center py-12 bg-gray-50 rounded-2xl">
               <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600">Les voyages seront bientôt disponibles</p>
+              <p className="text-gray-600 text-lg">Les voyages seront bientôt disponibles</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -157,16 +154,14 @@ const HomePage = () => {
                       <MapPin className="w-20 h-20 text-white opacity-30" />
                     </div>
                     
-                    {/* Badge prix */}
                     {trip.price && (
-                      <div className="absolute top-4 right-4 bg-white text-gray-900 px-4 py-2 rounded-full font-bold shadow-lg">
+                      <div className="absolute top-4 right-4 bg-white text-gray-900 px-4 py-2 rounded-full font-bold shadow-xl">
                         {trip.price.toLocaleString()} <span className="text-sm">MAD</span>
                       </div>
                     )}
 
-                    {/* Rating - optionnel si disponible */}
                     {trip.rating && (
-                      <div className="absolute top-4 left-4 bg-gray-900/70 backdrop-blur-sm text-white px-3 py-1 rounded-full flex items-center">
+                      <div className="absolute top-4 left-4 bg-gray-900/80 backdrop-blur-sm text-white px-3 py-2 rounded-full flex items-center shadow-lg">
                         <Star className="w-4 h-4 text-yellow-400 mr-1 fill-current" />
                         <span className="text-sm font-semibold">{trip.rating}</span>
                       </div>
@@ -205,7 +200,7 @@ const HomePage = () => {
           <div className="text-center mt-12">
             <a 
               href="/voyages" 
-              className="inline-flex items-center bg-gray-900 text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-all transform hover:scale-105 shadow-xl no-underline"
+              className="inline-flex items-center from-orange-600 to-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:from-orange-700 hover:to-orange-600 transition-all transform hover:scale-105 shadow-xl"
             >
               Voir tous les voyages
               <ChevronRight className="w-5 h-5 ml-2" />
@@ -214,12 +209,12 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Points forts - Design moderne */}
+      {/* Section Engagements */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-orange-600 font-semibold text-sm uppercase tracking-wider">Pourquoi nous choisir</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-3">Nos engagements</h2>
+            <span className="text-orange-600 font-bold text-sm uppercase tracking-wider mb-3 block">POURQUOI NOUS CHOISIR</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">Nos engagements</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -238,12 +233,12 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Témoignages - Nouvelle section */}
+      {/* Témoignages */}
       <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-orange-600 font-semibold text-sm uppercase tracking-wider">Témoignages</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-3">Ce que disent nos clients</h2>
+            <span className="text-orange-600 font-bold text-sm uppercase tracking-wider mb-3 block">TÉMOIGNAGES</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">Ce que disent nos clients</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -270,9 +265,8 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Newsletter - Design moderne */}
+      {/* Newsletter */}
       <section className="py-24 bg-gradient-to-br from-orange-600 via-orange-500 to-orange-600 relative overflow-hidden">
-        {/* Pattern décoratif */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
@@ -285,7 +279,7 @@ const HomePage = () => {
             Ne manquez aucune aventure
           </h2>
           <p className="text-xl text-orange-100 mb-10 leading-relaxed">
-            Inscrivez-vous à notre newsletter et recevez nos meilleures offres et conseils de voyage
+            Inscrivez-vous à notre newsletter et recevez nos meilleures offres
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">

@@ -8,19 +8,22 @@ import TripDetailPage from './pages/TripDetailPage';
 import HomePage from './pages/HomePage';
 import VoyagesPage from './pages/VoyagesPage';
 import DashboardPage from './pages/DashboardPage';
+import ReservationPage from './pages/ReservationPage';
 import './App.css';
+
+
 
 function App() {
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
-        <Navbar />
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/voyages" element={<VoyagesPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/reservation/:tripId" element={<ReservationPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/voyage/:id" element={<TripDetailPage />} />
           </Routes>
