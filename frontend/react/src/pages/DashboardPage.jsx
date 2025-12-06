@@ -83,7 +83,7 @@ const DashboardPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen w-full bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Chargement...</p>
@@ -93,14 +93,16 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen w-full bg-gray-50">
       <Navbar />
-      <section className="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-12">
+
+      {/* Full-width header */}
+      <section className="w-full bg-gradient-to-r from-orange-600 to-orange-500 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-2">
+          <h1 className="text-4xl md:text-5xl font-bold mb-2">
             Bonjour, {userData?.name || 'Voyageur'} !
           </h1>
-          <p className="text-orange-100">
+          <p className="text-orange-100 text-lg">
             Gérez vos réservations et découvrez de nouveaux voyages
           </p>
         </div>
@@ -127,8 +129,8 @@ const DashboardPage = () => {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`py-4 border-b-2 font-medium text-sm ${activeTab === tab.id
-                      ? 'border-orange-600 text-orange-600'
-                      : 'border-transparent text-gray-500'
+                    ? 'border-orange-600 text-orange-600'
+                    : 'border-transparent text-gray-500'
                     }`}
                 >
                   {tab.label}

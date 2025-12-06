@@ -20,7 +20,7 @@ class Cors
             return response('', 200)
                 ->header('Access-Control-Allow-Origin', $request->header('Origin') ?: 'http://localhost:5173')
                 ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-                ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin')
+                ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, X-XSRF-TOKEN')
                 ->header('Access-Control-Allow-Credentials', 'true')
                 ->header('Access-Control-Max-Age', '86400');
         }
@@ -30,7 +30,7 @@ class Cors
         // Add CORS headers to all responses
         $response->headers->set('Access-Control-Allow-Origin', $request->header('Origin') ?: 'http://localhost:5173');
         $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, X-XSRF-TOKEN');
         $response->headers->set('Access-Control-Allow-Credentials', 'true');
 
         return $response;

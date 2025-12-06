@@ -11,16 +11,18 @@ use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\AdminReservationController;
 
+// Public routes with CORS
+Route::middleware([\App\Http\Middleware\CorsMiddleware::class])->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-
-Route::get('/trips', [TripController::class, 'index']);
-Route::get('/trips/{id}', [TripController::class, 'show']);
-Route::get('/categories', [CategoryController::class, 'index']);
+    Route::get('/trips', [TripController::class, 'index']);
+    Route::get('/trips/{id}', [TripController::class, 'show']);
+    Route::get('/categories', [CategoryController::class, 'index']);
+});
 
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware([\App\Http\Middleware\CorsMiddleware::class, 'auth:sanctum'])->group(function () {
 
     // User
     Route::get('/me', [AuthController::class, 'me']);
@@ -42,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
-Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+Route::middleware([\App\Http\Middleware\CorsMiddleware::class, 'auth:sanctum', 'admin'])->group(function () {
 
     // Admin — listing des réservations
     Route::get('/admin/reservations', [AdminReservationController::class, 'index']);

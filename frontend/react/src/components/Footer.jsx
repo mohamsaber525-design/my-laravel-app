@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-12 mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="w-full bg-gray-900 text-gray-300 py-12 mt-16">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Colonne 1 - À propos */}
           <div>
@@ -16,7 +16,7 @@ const Footer = () => {
               <span className="text-xl font-bold text-white">TouriMaroc</span>
             </div>
             <p className="text-sm">
-              Votre partenaire de confiance pour découvrir les merveilles du Maroc. 
+              Votre partenaire de confiance pour découvrir les merveilles du Maroc.
               Voyages authentiques et expériences inoubliables.
             </p>
           </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Search, MapPin, Calendar, Users, Star, Loader } from 'lucide-react';
 import { tripsAPI } from '../services/api';
 import Navbar from '../components/Navbar';
@@ -31,6 +32,15 @@ const VoyagesPage = () => {
     trip.location?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const getImageUrl = (trip) => {
+    if (trip.main_image) {
+      return trip.main_image.startsWith('http')
+        ? trip.main_image
+        : `http://localhost:8000/storage/${trip.main_image}`;
+    }
+    return null;
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -43,12 +53,13 @@ const VoyagesPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-          <Navbar />
+    <div className="min-h-screen w-full bg-gray-50">
+      <Navbar />
 
-      <div className="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-12">
+      {/* Full-width header */}
+      <div className="w-full bg-gradient-to-r from-orange-600 to-orange-500 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-3">Tous nos voyages</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-3">Tous nos voyages</h1>
           <p className="text-lg text-orange-100">Découvrez notre collection de voyages au Maroc</p>
         </div>
       </div>
@@ -99,11 +110,19 @@ const VoyagesPage = () => {
                 key={trip.id}
                 className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
               >
-                {/* Image placeholder */}
+                {/* Image */}
                 <div className="relative h-64 bg-gradient-to-br from-orange-400 to-orange-600">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <MapPin className="w-16 h-16 text-white opacity-50" />
-                  </div>
+                  {getImageUrl(trip) ? (
+                    <img
+                      src={getImageUrl(trip)}
+                      alt={trip.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <MapPin className="w-16 h-16 text-white opacity-50" />
+                    </div>
+                  )}
                   {trip.price && (
                     <div className="absolute top-4 right-4 bg-white text-gray-900 px-3 py-1 rounded-full font-bold text-sm">
                       {trip.price} MAD
@@ -135,12 +154,18 @@ const VoyagesPage = () => {
                   </div>
 
                   <div className="flex gap-3">
-                    <button className="flex-1 border-2 border-orange-600 text-orange-600 py-2 rounded-lg font-semibold hover:bg-orange-50 transition text-sm">
+                    <Link
+                      to={`/voyage/${trip.id}`}
+                      className="flex-1 border-2 border-orange-600 text-orange-600 py-2 rounded-lg font-semibold hover:bg-orange-50 transition text-sm text-center"
+                    >
                       Voir détails
-                    </button>
-                    <button className="flex-1 bg-orange-600 text-white py-2 rounded-lg font-semibold hover:bg-orange-700 transition text-sm">
+                    </Link>
+                    <Link
+                      to={`/reservation/${trip.id}`}
+                      className="flex-1 bg-orange-600 text-white py-2 rounded-lg font-semibold hover:bg-orange-700 transition text-sm text-center"
+                    >
                       Réserver
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -153,3 +178,4 @@ const VoyagesPage = () => {
 };
 
 export default VoyagesPage;
+

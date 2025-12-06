@@ -121,9 +121,9 @@ const SignupPage = () => {
   const passwordStrength = getPasswordStrength();
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen w-full bg-gray-50 flex flex-col">
       <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <a href="/" className="flex items-center space-x-2">
             <div className="bg-orange-600 text-white p-2 rounded-lg font-bold text-xl">
               TM
@@ -133,7 +133,7 @@ const SignupPage = () => {
         </div>
       </header>
 
-      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="flex-1 w-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl w-full">
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <div className="text-center mb-8">
@@ -277,7 +277,7 @@ const SignupPage = () => {
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-xs text-gray-600">Force du mot de passe:</span>
                       <span className={`text-xs font-medium ${passwordStrength.strength <= 2 ? 'text-red-600' :
-                          passwordStrength.strength <= 3 ? 'text-yellow-600' : 'text-green-600'
+                        passwordStrength.strength <= 3 ? 'text-yellow-600' : 'text-green-600'
                         }`}>
                         {passwordStrength.label}
                       </span>

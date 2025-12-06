@@ -44,7 +44,7 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="w-full">
       <Navbar />
       {/* Hero Section avec vrai background */}
       <section className="relative h-screen min-h-[700px] flex items-center overflow-hidden">
@@ -71,7 +71,7 @@ const HomePage = () => {
               Découvrez le Maroc
               <span className="block text-orange-400 mt-3">Autrement</span>
             </h1>
-            
+
             <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl leading-relaxed">
               Explorez les merveilles du royaume chérifien avec nos voyages organisés authentiques
             </p>
@@ -84,7 +84,7 @@ const HomePage = () => {
                 <Search className="w-5 h-5 mr-2" />
                 Découvrir nos voyages
               </a>
-              
+
               <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/20 transition-all border border-white/30 flex items-center justify-center">
                 Demander un devis
                 <ChevronRight className="w-5 h-5 ml-2" />
@@ -153,7 +153,7 @@ const HomePage = () => {
                     <div className="absolute inset-0 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-500">
                       <MapPin className="w-20 h-20 text-white opacity-30" />
                     </div>
-                    
+
                     {trip.price && (
                       <div className="absolute top-4 right-4 bg-white text-gray-900 px-4 py-2 rounded-full font-bold shadow-xl">
                         {trip.price.toLocaleString()} <span className="text-sm">MAD</span>
@@ -198,8 +198,8 @@ const HomePage = () => {
           )}
 
           <div className="text-center mt-12">
-            <a 
-              href="/voyages" 
+            <a
+              href="/voyages"
               className="inline-flex items-center from-orange-600 to-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:from-orange-700 hover:to-orange-600 transition-all transform hover:scale-105 shadow-xl"
             >
               Voir tous les voyages

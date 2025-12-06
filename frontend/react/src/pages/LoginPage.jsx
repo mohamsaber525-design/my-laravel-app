@@ -72,10 +72,10 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-       
+    <div className="min-h-screen w-full bg-gray-50 flex flex-col">
+
       <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <a href="/" className="flex items-center space-x-2">
             <div className="bg-orange-600 text-white p-2 rounded-lg font-bold text-xl">
               TM
@@ -83,10 +83,10 @@ const LoginPage = () => {
             <span className="text-xl font-bold text-gray-800">TouriMaroc</span>
           </a>
         </div>
-      </header> 
+      </header>
 
       {/* Contenu principal */}
-      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="flex-1 w-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full">
           {/* Carte de connexion */}
           <div className="bg-white rounded-2xl shadow-xl p-8">

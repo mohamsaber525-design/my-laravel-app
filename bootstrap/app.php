@@ -15,15 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Apply CORS middleware globally
-        $middleware->use([
-            \App\Http\Middleware\Cors::class,
-        ]);
-        
-        // Configure API middleware group
-        $middleware->api(prepend: [
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        ]);
+        // Apply CORS middleware globally at the top of the stack
+        $middleware->prepend(\App\Http\Middleware\CorsMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
