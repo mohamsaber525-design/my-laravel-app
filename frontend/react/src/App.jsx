@@ -8,6 +8,7 @@ import TripDetailPage from './pages/TripDetailPage';
 import HomePage from './pages/HomePage';
 import VoyagesPage from './pages/VoyagesPage';
 import DashboardPage from './pages/DashboardPage';
+import AdminDashboard from './pages/AdminDashboard';
 import ReservationPage from './pages/ReservationPage';
 import './App.css';
 
@@ -17,7 +18,7 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen w-full flex flex-col">
-        <main className="flex-grow w-full">
+        <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/voyages" element={<VoyagesPage />} />
@@ -26,6 +27,7 @@ function App() {
             <Route path="/reservation/:tripId" element={<ReservationPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/voyage/:id" element={<TripDetailPage />} />
+            <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
         </main>
         <Footer />

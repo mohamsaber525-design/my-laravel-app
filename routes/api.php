@@ -19,6 +19,7 @@ Route::middleware([\App\Http\Middleware\CorsMiddleware::class])->group(function 
     Route::get('/trips', [TripController::class, 'index']);
     Route::get('/trips/{id}', [TripController::class, 'show']);
     Route::get('/categories', [CategoryController::class, 'index']);
+    Route::get('/reviews', [ReviewController::class, 'index']);
 });
 
 
@@ -31,6 +32,7 @@ Route::middleware([\App\Http\Middleware\CorsMiddleware::class, 'auth:sanctum'])-
     // Reservations (Client)
     Route::post('/reservations', [ReservationController::class, 'store']);
     Route::get('/reservations/me', [ReservationController::class, 'index']);
+    Route::put('/reservations/{id}/cancel', [ReservationController::class, 'cancel']);
 
     // Reviews
     Route::post('/reviews', [ReviewController::class, 'store']);
@@ -56,4 +58,8 @@ Route::middleware([\App\Http\Middleware\CorsMiddleware::class, 'auth:sanctum', '
     Route::post('/admin/trips', [TripController::class, 'store']);
     Route::put('/admin/trips/{id}', [TripController::class, 'update']);
     Route::delete('/admin/trips/{id}', [TripController::class, 'destroy']);
+
+    // Admin — Users & Stats
+    Route::get('/admin/users', [App\Http\Controllers\Api\AdminUserController::class, 'index']);
+    Route::get('/admin/stats', [App\Http\Controllers\Api\StatsController::class, 'dashboard']);
 });

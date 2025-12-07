@@ -52,11 +52,16 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      await authAPI.login({
+      const response = await authAPI.login({
         email: formData.email,
         password: formData.password
       });
-      navigate('/dashboard');
+
+      if (response.user.role === 'admin' || response.user.email === 'admin@gmail.com') {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error) {
       console.error('Login error:', error);
       if (error.response?.status === 401) {

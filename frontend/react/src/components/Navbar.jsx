@@ -6,6 +6,7 @@ import { authAPI } from '../services/api';
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -14,6 +15,8 @@ const Navbar = () => {
     const checkAuth = () => {
       const token = localStorage.getItem('auth_token');
       setIsAuthenticated(!!token);
+      const user = JSON.parse(localStorage.getItem('user'));
+      setIsAdmin(user?.role === 'admin');
     };
     checkAuth();
   }, [location]);
@@ -48,7 +51,7 @@ const Navbar = () => {
       <nav className="w-full px-4 sm:px-6 lg:px-8">
         {/* CONTENU CENTRÉ */}
         <div className="max-w-7xl mx-auto flex justify-between items-center h-16">
-          
+
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="bg-orange-600 text-white p-2 rounded-lg font-bold text-xl">
@@ -79,6 +82,14 @@ const Navbar = () => {
                 className={`${isActive('/dashboard') ? 'text-orange-600 font-medium' : 'text-gray-600 hover:text-orange-600'} transition`}
               >
                 Mon Tableau de Bord
+              </Link>
+            )}
+            {isAuthenticated && isAdmin && (
+              <Link
+                to="/admin"
+                className={`${isActive('/admin') ? 'text-orange-600 font-medium' : 'text-gray-600 hover:text-orange-600'} transition`}
+              >
+                Admin
               </Link>
             )}
           </div>
@@ -130,6 +141,15 @@ const Navbar = () => {
                 onClick={() => setMenuOpen(false)}
               >
                 Mon Tableau de Bord
+              </Link>
+            )}
+            {isAuthenticated && isAdmin && (
+              <Link
+                to="/admin"
+                className={`block ${isActive('/admin') ? 'text-orange-600 font-medium' : 'text-gray-600'}`}
+                onClick={() => setMenuOpen(false)}
+              >
+                Admin
               </Link>
             )}
             <button

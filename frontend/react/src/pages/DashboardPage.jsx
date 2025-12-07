@@ -45,6 +45,21 @@ const DashboardPage = () => {
     fetchData();
   }, [navigate]);
 
+  const handleCancelReservation = async (id) => {
+    if (window.confirm('Êtes-vous sûr de vouloir annuler cette réservation ?')) {
+      try {
+        await reservationsAPI.cancel(id);
+        // Refresh reservations
+        const data = await reservationsAPI.getMyReservations();
+        setReservations(Array.isArray(data) ? data : []);
+        alert('Réservation annulée avec succès');
+      } catch (err) {
+        console.error('Error cancelling reservation:', err);
+        alert('Erreur lors de l\'annulation');
+      }
+    }
+  };
+
   const stats = [
     { label: "Voyages réservés", valeur: reservations.length, icon: MapPin },
     { label: "Confirmées", valeur: reservations.filter(r => r.status === 'confirmed').length, icon: CheckCircle },
@@ -210,9 +225,22 @@ const DashboardPage = () => {
                             {reservation.people_count} personne(s)
                           </div>
                         </div>
-                        <button className="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700">
-                          Voir détails
-                        </button>
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => navigate(`/voyage/${reservation.trip?.id}`)}
+                            className="flex-1 bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700"
+                          >
+                            Voir détails
+                          </button>
+                          {reservation.status !== 'cancelled' && (
+                            <button
+                              onClick={() => handleCancelReservation(reservation.id)}
+                              className="flex-1 bg-red-100 text-red-600 py-2 rounded-lg hover:bg-red-200 font-medium"
+                            >
+                              Annuler
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}

@@ -47,6 +47,7 @@ class TripController extends Controller
             'price' => $validated['price'],
             'duration_days' => $validated['duration_days'],
             'main_image' => $imagePath,
+            'image' => $imagePath, // Fix for required image field
             'available' => $validated['available'] ?? true,
         ]);
 

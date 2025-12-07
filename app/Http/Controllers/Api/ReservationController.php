@@ -14,6 +14,29 @@ class ReservationController extends Controller
         return auth()->user()->reservations()->with(['trip', 'payment'])->get();
     }
 
+    public function cancel($id)
+    {
+        $reservation = Reservation::findOrFail($id);
+
+        // Vérifier que la réservation appartient à l'utilisateur connecté
+        if ($reservation->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        // Vérifier si déjà annulée
+        if ($reservation->status === 'cancelled') {
+            return response()->json(['message' => 'Reservation is already cancelled'], 400);
+        }
+
+        $reservation->status = 'cancelled';
+        $reservation->save();
+
+        return response()->json([
+            'message' => 'Reservation cancelled successfully',
+            'reservation' => $reservation->load('trip')
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([

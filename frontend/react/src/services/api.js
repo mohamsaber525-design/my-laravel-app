@@ -62,7 +62,7 @@ export const tripsAPI = {
 
   // Mettre à jour un trip (Admin)
   update: async (id, tripData) => {
-    const response = await api.put(`/admin/trips/${id}`, tripData);
+    const response = await api.post(`/admin/trips/${id}?_method=PUT`, tripData);
     return response.data;
   },
 
@@ -77,6 +77,13 @@ export const tripsAPI = {
     const response = await api.get('/trips/search', { params: { q: query } });
     return response.data;
   },
+};
+
+export const categoriesAPI = {
+  getAll: async () => {
+    const response = await api.get('/categories');
+    return response.data;
+  }
 };
 
 // Alias pour compatibilité
@@ -112,6 +119,18 @@ export const reservationsAPI = {
   // Mettre à jour une réservation
   update: async (id, reservationData) => {
     const response = await api.put(`/reservations/${id}`, reservationData);
+    return response.data;
+  },
+
+  // Admin - Récupérer toutes les réservations
+  getAll: async () => {
+    const response = await api.get('/admin/reservations');
+    return response.data;
+  },
+
+  // Admin - Mettre à jour le statut
+  updateStatus: async (id, status) => {
+    const response = await api.put(`/admin/reservations/${id}`, { status });
     return response.data;
   },
 };
@@ -185,6 +204,28 @@ export const usersAPI = {
     const response = await api.put('/users/password', passwordData);
     return response.data;
   },
+
+  // Récupérer tous les utilisateurs (Admin)
+  getAll: async () => {
+    const response = await api.get('/admin/users');
+    return response.data;
+  },
+};
+
+// ========== AVIS ==========
+
+export const reviewsAPI = {
+  // Récupérer tous les avis
+  getAll: async () => {
+    const response = await api.get('/reviews');
+    return response.data;
+  },
+
+  // Créer un avis
+  create: async (reviewData) => {
+    const response = await api.post('/reviews', reviewData);
+    return response.data;
+  },
 };
 
 // ========== PAIEMENTS ==========
@@ -215,6 +256,12 @@ export const statsAPI = {
   // Récupérer les statistiques générales (Admin)
   getGeneralStats: async () => {
     const response = await api.get('/stats/general');
+    return response.data;
+  },
+
+  // Récupérer les statistiques du dashboard (Admin)
+  getDashboardStats: async () => {
+    const response = await api.get('/admin/stats');
     return response.data;
   },
 };

@@ -1,27 +1,81 @@
 import React, { useState, useEffect } from 'react';
-import { Search, MapPin, Calendar, Users, Shield, Award, Clock, Heart, Loader, Star, ChevronRight, TrendingUp } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Search, MapPin, Calendar, Users, Shield, Award, Clock, Heart, Loader, Star, ChevronRight, TrendingUp, X } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import { reviewsAPI, voyagesAPI, authAPI } from '../services/api';
 
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [newReview, setNewReview] = useState({ rating: 5, comment: '', trip_id: '' });
+  const [allTrips, setAllTrips] = useState([]); // For the dropdown in modal
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const fetchFeaturedTrips = async () => {
+    const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('http://localhost:8000/api/trips');
-        const data = await response.json();
-        setTrips(Array.isArray(data) ? data.slice(0, 3) : []);
+        const [tripsData, reviewsData] = await Promise.all([
+          fetch('http://localhost:8000/api/trips').then(res => res.json()),
+          reviewsAPI.getAll()
+        ]);
+
+        setTrips(Array.isArray(tripsData) ? tripsData.slice(0, 3) : []);
+        setReviews(Array.isArray(reviewsData) ? reviewsData : []);
+
+        // Check auth for "Add Review" button visibility
+        setIsAuthenticated(authAPI.isAuthenticated());
+
       } catch (err) {
-        console.error('Error fetching trips:', err);
+        console.error('Error fetching data:', err);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchFeaturedTrips();
+    fetchData();
   }, []);
+
+  const handleOpenReviewModal = async () => {
+    if (!isAuthenticated) {
+      window.location.href = '/login';
+      return;
+    }
+    try {
+      // Fetch all trips for the dropdown if not already fetched
+      if (allTrips.length === 0) {
+        const data = await voyagesAPI.getAll();
+        setAllTrips(data);
+      }
+      setShowReviewModal(true);
+    } catch (error) {
+      console.error('Error fetching trips for modal:', error);
+    }
+  };
+  const getImageUrl = (trip) => {
+    if (trip.main_image) {
+      return trip.main_image.startsWith('http')
+        ? trip.main_image
+        : `http://localhost:8000/storage/${trip.main_image}`;
+    }
+    return null;
+  };
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    try {
+      const addedReview = await reviewsAPI.create(newReview);
+      setReviews([addedReview, ...reviews].slice(0, 3)); // Add new review to top and keep only 3
+      setShowReviewModal(false);
+      setNewReview({ rating: 5, comment: '', trip_id: '' });
+      alert('Votre avis a été ajouté avec succès !');
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('Erreur lors de l\'ajout de l\'avis. Veuillez réessayer.');
+    }
+  };
 
   const stats = [
     { nombre: "500+", label: "Voyages organisés", icon: MapPin },
@@ -35,12 +89,6 @@ const HomePage = () => {
     { titre: "Qualité", description: "Service premium garanti", icon: Award },
     { titre: "Expérience", description: "15 ans d'expertise", icon: Clock },
     { titre: "Support", description: "Assistance disponible 24/7", icon: Heart }
-  ];
-
-  const testimonials = [
-    { name: "Sarah M.", text: "Une expérience inoubliable dans le désert. L'organisation était parfaite !", rating: 5 },
-    { name: "Ahmed K.", text: "Guides professionnels et itinéraires exceptionnels. Je recommande vivement.", rating: 5 },
-    { name: "Marie L.", text: "Le meilleur voyage de ma vie. Tout était au-delà de mes attentes.", rating: 5 }
   ];
 
   return (
@@ -84,11 +132,6 @@ const HomePage = () => {
                 <Search className="w-5 h-5 mr-2" />
                 Découvrir nos voyages
               </a>
-
-              <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/20 transition-all border border-white/30 flex items-center justify-center">
-                Demander un devis
-                <ChevronRight className="w-5 h-5 ml-2" />
-              </button>
             </div>
           </div>
         </div>
@@ -149,8 +192,23 @@ const HomePage = () => {
               {trips.map((trip) => (
                 <div key={trip.id} className="group bg-white rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100">
                   {/* Image */}
-                  <div className="relative h-72 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-500">
+                  {/* Image */}
+                  <div className="relative h-72 bg-gray-200 overflow-hidden">
+                    {getImageUrl(trip) ? (
+                      <img
+                        src={getImageUrl(trip)}
+                        alt={trip.title}
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+
+                    {/* Fallback Gradient if no image or error */}
+                    <div className={`absolute inset-0 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 flex items-center justify-center ${getImageUrl(trip) ? 'hidden' : 'flex'}`}>
                       <MapPin className="w-20 h-20 text-white opacity-30" />
                     </div>
 
@@ -188,8 +246,11 @@ const HomePage = () => {
                       </div>
                     )}
 
-                    <button className="w-full bg-gradient-to-r from-orange-600 to-orange-500 text-white py-3 rounded-xl font-semibold hover:from-orange-700 hover:to-orange-600 transition-all transform hover:scale-105 shadow-lg shadow-orange-600/30">
-                      Voir les détails
+                    <button
+                      onClick={() => navigate(`/voyage/${trip.id}`)}
+                      className="w-full bg-gradient-to-r from-orange-600 to-orange-500 text-white py-3 rounded-xl font-semibold hover:from-orange-700 hover:to-orange-600 transition-all transform hover:scale-105 shadow-lg shadow-orange-600/30"
+                    >
+                      Voir détails
                     </button>
                   </div>
                 </div>
@@ -238,67 +299,111 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-orange-600 font-bold text-sm uppercase tracking-wider mb-3 block">TÉMOIGNAGES</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">Ce que disent nos clients</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow border border-gray-100">
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-6 italic leading-relaxed">"{testimonial.text}"</p>
-                <div className="flex items-center">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white font-bold mr-3">
-                    {testimonial.name[0]}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                    <p className="text-sm text-gray-500">Client vérifié</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter */}
-      <section className="py-24 bg-gradient-to-br from-orange-600 via-orange-500 to-orange-600 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-            backgroundSize: "40px 40px"
-          }}></div>
-        </div>
-
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-            Ne manquez aucune aventure
-          </h2>
-          <p className="text-xl text-orange-100 mb-10 leading-relaxed">
-            Inscrivez-vous à notre newsletter et recevez nos meilleures offres
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
-            <input
-              type="email"
-              placeholder="votre@email.com"
-              className="flex-1 px-6 py-5 rounded-xl text-gray-900 focus:outline-none focus:ring-4 focus:ring-white/50 shadow-xl"
-            />
-            <button className="bg-gray-900 text-white px-10 py-5 rounded-xl font-semibold hover:bg-gray-800 transition-all transform hover:scale-105 whitespace-nowrap shadow-xl flex items-center justify-center">
-              S'inscrire
-              <ChevronRight className="w-5 h-5 ml-2" />
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Ce que disent nos clients</h2>
+            <button
+              onClick={handleOpenReviewModal}
+              className="mt-4 bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 transition"
+            >
+              Ajouter un avis
             </button>
           </div>
 
-          <p className="text-orange-100 text-sm mt-6">
-            🔒 Vos données sont protégées et ne seront jamais partagées
-          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {reviews.length > 0 ? (
+              reviews.map((review, index) => (
+                <div key={index} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow border border-gray-100">
+                  <div className="flex mb-4">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 mb-6 italic leading-relaxed">"{review.comment}"</p>
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                      {review.user?.name ? review.user.name[0] : 'A'}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">{review.user?.name || 'Anonyme'}</p>
+                      <p className="text-sm text-gray-500">Client vérifié</p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-3 text-center text-gray-500">
+                Aucun avis pour le moment. Soyez le premier à donner votre avis !
+              </div>
+            )}
+          </div>
         </div>
       </section>
+
+
+      {/* Modal Ajouter Avis */}
+      {showReviewModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl max-w-md w-full p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold">Ajouter un avis</h3>
+              <button onClick={() => setShowReviewModal(false)}>
+                <X className="w-6 h-6 text-gray-500" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmitReview} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Voyage concerné</label>
+                <select
+                  required
+                  className="w-full border rounded-lg p-2"
+                  value={newReview.trip_id}
+                  onChange={(e) => setNewReview({ ...newReview, trip_id: e.target.value })}
+                >
+                  <option value="">Sélectionnez un voyage</option>
+                  {allTrips.map(trip => (
+                    <option key={trip.id} value={trip.id}>{trip.title}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Note</label>
+                <div className="flex space-x-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      type="button"
+                      key={star}
+                      onClick={() => setNewReview({ ...newReview, rating: star })}
+                      className={`focus:outline-none ${star <= newReview.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                    >
+                      <Star className="w-8 h-8 fill-current" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Commentaire</label>
+                <textarea
+                  required
+                  rows="4"
+                  className="w-full border rounded-lg p-2"
+                  value={newReview.comment}
+                  onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                  placeholder="Partagez votre expérience..."
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-orange-600 text-white py-3 rounded-lg font-semibold hover:bg-orange-700"
+              >
+                Publier l'avis
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
