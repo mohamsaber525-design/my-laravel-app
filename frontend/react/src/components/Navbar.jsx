@@ -53,14 +53,14 @@ const Navbar = () => {
       <nav className="w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            
+
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2 group">
               <div className="bg-gradient-to-br from-orange-600 to-orange-500 text-white p-2 rounded-lg font-bold text-xl shadow-lg group-hover:shadow-xl transition-shadow">
                 TM
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-                TouriMaroc
+                TM
               </span>
             </Link>
 
@@ -68,21 +68,19 @@ const Navbar = () => {
             <div className="hidden md:flex items-center space-x-1">
               <Link
                 to="/"
-                className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                  isActive('/') 
-                    ? 'text-orange-600 bg-orange-50' 
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${isActive('/')
+                    ? 'text-orange-600 bg-orange-50'
                     : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50'
-                }`}
+                  }`}
               >
                 Accueil
               </Link>
               <Link
                 to="/voyages"
-                className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                  isActive('/voyages') 
-                    ? 'text-orange-600 bg-orange-50' 
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${isActive('/voyages')
+                    ? 'text-orange-600 bg-orange-50'
                     : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50'
-                }`}
+                  }`}
               >
                 Voyages
               </Link>
@@ -100,10 +98,10 @@ const Navbar = () => {
                       {userName.charAt(0).toUpperCase()}
                     </div>
                     <span className="font-medium text-gray-700">{userName}</span>
-                    <svg 
-                      className={`w-4 h-4 text-gray-500 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} 
-                      fill="none" 
-                      stroke="currentColor" 
+                    <svg
+                      className={`w-4 h-4 text-gray-500 transition-transform ${showUserMenu ? 'rotate-180' : ''}`}
+                      fill="none"
+                      stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -113,8 +111,8 @@ const Navbar = () => {
                   {/* Dropdown Menu */}
                   {showUserMenu && (
                     <>
-                      <div 
-                        className="fixed inset-0 z-10" 
+                      <div
+                        className="fixed inset-0 z-10"
                         onClick={() => setShowUserMenu(false)}
                       ></div>
                       <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-20">
@@ -122,7 +120,7 @@ const Navbar = () => {
                           <p className="text-sm font-semibold text-gray-900">{userName}</p>
                           <p className="text-xs text-gray-500">{isAdmin ? 'Administrateur' : 'Client'}</p>
                         </div>
-                        
+
                         <Link
                           to="/dashboard"
                           onClick={() => setShowUserMenu(false)}
@@ -175,8 +173,8 @@ const Navbar = () => {
             </div>
 
             {/* Menu Mobile Toggle */}
-            <button 
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors" 
+            <button
+              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
               onClick={() => setMenuOpen(!menuOpen)}
             >
               {menuOpen ? (
@@ -207,23 +205,21 @@ const Navbar = () => {
 
               <Link
                 to="/"
-                className={`block px-4 py-3 rounded-lg font-medium transition-all ${
-                  isActive('/') 
-                    ? 'text-orange-600 bg-orange-50' 
+                className={`block px-4 py-3 rounded-lg font-medium transition-all ${isActive('/')
+                    ? 'text-orange-600 bg-orange-50'
                     : 'text-gray-700 hover:bg-gray-50'
-                }`}
+                  }`}
                 onClick={() => setMenuOpen(false)}
               >
                 Accueil
               </Link>
-              
+
               <Link
                 to="/voyages"
-                className={`block px-4 py-3 rounded-lg font-medium transition-all ${
-                  isActive('/voyages') 
-                    ? 'text-orange-600 bg-orange-50' 
+                className={`block px-4 py-3 rounded-lg font-medium transition-all ${isActive('/voyages')
+                    ? 'text-orange-600 bg-orange-50'
                     : 'text-gray-700 hover:bg-gray-50'
-                }`}
+                  }`}
                 onClick={() => setMenuOpen(false)}
               >
                 Voyages
@@ -233,11 +229,10 @@ const Navbar = () => {
                 <>
                   <Link
                     to="/dashboard"
-                    className={`flex items-center px-4 py-3 rounded-lg font-medium transition-all ${
-                      isActive('/dashboard') 
-                        ? 'text-orange-600 bg-orange-50' 
+                    className={`flex items-center px-4 py-3 rounded-lg font-medium transition-all ${isActive('/dashboard')
+                        ? 'text-orange-600 bg-orange-50'
                         : 'text-gray-700 hover:bg-gray-50'
-                    }`}
+                      }`}
                     onClick={() => setMenuOpen(false)}
                   >
                     <LayoutDashboard className="w-4 h-4 mr-3" />
@@ -247,11 +242,10 @@ const Navbar = () => {
                   {isAdmin && (
                     <Link
                       to="/admin"
-                      className={`flex items-center px-4 py-3 rounded-lg font-medium transition-all ${
-                        isActive('/admin') 
-                          ? 'text-orange-600 bg-orange-50' 
+                      className={`flex items-center px-4 py-3 rounded-lg font-medium transition-all ${isActive('/admin')
+                          ? 'text-orange-600 bg-orange-50'
                           : 'text-gray-700 hover:bg-gray-50'
-                      }`}
+                        }`}
                       onClick={() => setMenuOpen(false)}
                     >
                       <Shield className="w-4 h-4 mr-3" />

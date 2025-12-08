@@ -201,7 +201,7 @@ const AdminDashboard = () => {
                     <div className="flex items-center justify-between mb-8 px-2">
                         <div className="flex items-center space-x-2">
                             <div className="bg-orange-600 text-white p-2 rounded-lg font-bold">TM</div>
-                            <span className="text-xl font-bold text-white">Admin</span>
+                            <span className="text-xl font-bold text-white">TM Admin</span>
                         </div>
                         <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-white">
                             <X className="w-6 h-6" />

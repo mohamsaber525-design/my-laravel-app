@@ -13,7 +13,7 @@ const Footer = () => {
               <div className="bg-orange-600 text-white p-2 rounded-lg font-bold">
                 TM
               </div>
-              <span className="text-xl font-bold text-white">TouriMaroc</span>
+              <span className="text-xl font-bold text-white">TM</span>
             </div>
             <p className="text-sm">
               Votre partenaire de confiance pour découvrir les merveilles du Maroc.
@@ -101,7 +101,7 @@ const Footer = () => {
 
         {/* Ligne de séparation */}
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-sm">
-          <p>&copy; {new Date().getFullYear()} TouriMaroc. Tous droits réservés.</p>
+          <p>&copy; {new Date().getFullYear()} TM. Tous droits réservés.</p>
           <div className="mt-2 space-x-4">
             <a href="#" className="hover:text-orange-500 transition">
               Politique de confidentialité
