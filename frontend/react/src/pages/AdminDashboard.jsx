@@ -558,145 +558,303 @@ const AdminDashboard = () => {
                     )}
                 </main>
             </div>
-
-            {/* Modal Ajouter Voyage */}
             {showAddTripModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
-                        <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-2xl font-bold">Ajouter un voyage</h2>
-                            <button onClick={() => setShowAddTripModal(false)}>
-                                <X className="w-6 h-6" />
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+                    <div className="bg-white rounded-2xl max-w-3xl w-full my-8 shadow-2xl">
+                        {/* Header */}
+                        <div className="flex justify-between items-center p-6 border-b border-gray-200">
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900">Ajouter un nouveau voyage</h2>
+                                <p className="text-sm text-gray-500 mt-1">Remplissez les informations du voyage</p>
+                            </div>
+                            <button
+                                onClick={() => setShowAddTripModal(false)}
+                                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                            >
+                                <X className="w-6 h-6 text-gray-500" />
                             </button>
                         </div>
 
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium mb-2">Titre *</label>
-                                <input
-                                    type="text"
-                                    value={newTrip.title}
-                                    onChange={(e) => setNewTrip({ ...newTrip, title: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                    placeholder="Ex: Circuit des Villes Impériales"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium mb-2">Slug (optionnel)</label>
-                                <input
-                                    type="text"
-                                    value={newTrip.slug}
-                                    onChange={(e) => setNewTrip({ ...newTrip, slug: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                    placeholder="ex: circuit-villes-imperiales"
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
+                        {/* Body - Scrollable */}
+                        <div className="p-6 max-h-[calc(90vh-200px)] overflow-y-auto">
+                            <div className="space-y-6">
+                                {/* Section: Informations de base */}
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Catégorie *</label>
-                                    <select
-                                        value={newTrip.category_id}
-                                        onChange={(e) => setNewTrip({ ...newTrip, category_id: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                    >
-                                        <option value="">Sélectionner une catégorie</option>
-                                        {categories.map(cat => (
-                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
-                                        ))}
-                                    </select>
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                                            <span className="text-orange-600 font-bold">1</span>
+                                        </div>
+                                        Informations de base
+                                    </h3>
+
+                                    <div className="space-y-4 pl-11">
+                                        {/* Titre */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Titre du voyage <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={newTrip.title}
+                                                onChange={(e) => setNewTrip({ ...newTrip, title: e.target.value })}
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-shadow"
+                                                placeholder="Ex: Circuit des Villes Impériales"
+                                                required
+                                            />
+                                            <p className="text-xs text-gray-500 mt-1">Le titre apparaîtra sur la carte du voyage</p>
+                                        </div>
+
+                                        {/* Slug */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Slug URL (optionnel)
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={newTrip.slug}
+                                                onChange={(e) => setNewTrip({ ...newTrip, slug: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                                placeholder="circuit-villes-imperiales"
+                                            />
+                                            <p className="text-xs text-gray-500 mt-1">Laissez vide pour générer automatiquement à partir du titre</p>
+                                        </div>
+
+                                        {/* Catégorie et Destination */}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    Catégorie <span className="text-red-500">*</span>
+                                                </label>
+                                                <div className="relative">
+                                                    <select
+                                                        value={newTrip.category_id}
+                                                        onChange={(e) => setNewTrip({ ...newTrip, category_id: e.target.value })}
+                                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none bg-white"
+                                                        required
+                                                    >
+                                                        <option value="">Sélectionner...</option>
+                                                        {categories.map(cat => (
+                                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                                        ))}
+                                                    </select>
+                                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    Destination <span className="text-red-500">*</span>
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={newTrip.location}
+                                                    onChange={(e) => setNewTrip({ ...newTrip, location: e.target.value })}
+                                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                                    placeholder="Ex: Marrakech"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                {/* Section: Tarification et Durée */}
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Destination *</label>
-                                    <input
-                                        type="text"
-                                        value={newTrip.location}
-                                        onChange={(e) => setNewTrip({ ...newTrip, location: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                        placeholder="Ex: Marrakech"
-                                    />
-                                </div>
-                            </div>
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                                            <span className="text-orange-600 font-bold">2</span>
+                                        </div>
+                                        Tarification et Durée
+                                    </h3>
 
-                            <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-11">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Prix par personne (MAD) <span className="text-red-500">*</span>
+                                            </label>
+                                            <div className="relative">
+                                                <input
+                                                    type="number"
+                                                    value={newTrip.price}
+                                                    onChange={(e) => setNewTrip({ ...newTrip, price: e.target.value })}
+                                                    className="w-full px-4 py-3 pr-16 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                                    placeholder="4500"
+                                                    min="0"
+                                                    required
+                                                />
+                                                <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-500 font-medium">
+                                                    MAD
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Durée (jours) <span className="text-red-500">*</span>
+                                            </label>
+                                            <div className="relative">
+                                                <input
+                                                    type="number"
+                                                    value={newTrip.duration_days}
+                                                    onChange={(e) => setNewTrip({ ...newTrip, duration_days: e.target.value })}
+                                                    className="w-full px-4 py-3 pr-16 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                                    placeholder="8"
+                                                    min="1"
+                                                    required
+                                                />
+                                                <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-500 font-medium">
+                                                    jour{newTrip.duration_days > 1 ? 's' : ''}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Section: Image */}
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Prix (MAD) *</label>
-                                    <input
-                                        type="number"
-                                        value={newTrip.price}
-                                        onChange={(e) => setNewTrip({ ...newTrip, price: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                        placeholder="4500"
-                                    />
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                                            <span className="text-orange-600 font-bold">3</span>
+                                        </div>
+                                        Image principale
+                                    </h3>
+
+                                    <div className="pl-11">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Image du voyage <span className="text-red-500">*</span>
+                                        </label>
+                                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-orange-500 transition-colors">
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => setNewTrip({ ...newTrip, main_image: e.target.files[0] })}
+                                                className="hidden"
+                                                id="image-upload"
+                                                required
+                                            />
+                                            <label
+                                                htmlFor="image-upload"
+                                                className="flex flex-col items-center cursor-pointer"
+                                            >
+                                                {newTrip.main_image ? (
+                                                    <div className="text-center">
+                                                        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                                            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                                            </svg>
+                                                        </div>
+                                                        <p className="text-sm font-medium text-gray-900">{newTrip.main_image.name}</p>
+                                                        <p className="text-xs text-gray-500 mt-1">Cliquez pour changer</p>
+                                                    </div>
+                                                ) : (
+                                                    <div className="text-center">
+                                                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                                            <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                            </svg>
+                                                        </div>
+                                                        <p className="text-sm font-medium text-gray-900">Cliquez pour uploader</p>
+                                                        <p className="text-xs text-gray-500 mt-1">PNG, JPG jusqu'à 5MB</p>
+                                                    </div>
+                                                )}
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                {/* Section: Descriptions */}
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Durée (jours) *</label>
-                                    <input
-                                        type="number"
-                                        value={newTrip.duration_days}
-                                        onChange={(e) => setNewTrip({ ...newTrip, duration_days: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                        placeholder="8"
-                                    />
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                                            <span className="text-orange-600 font-bold">4</span>
+                                        </div>
+                                        Descriptions
+                                    </h3>
+
+                                    <div className="space-y-4 pl-11">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Description courte
+                                            </label>
+                                            <textarea
+                                                value={newTrip.short_description}
+                                                onChange={(e) => setNewTrip({ ...newTrip, short_description: e.target.value })}
+                                                rows="2"
+                                                maxLength="200"
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                                                placeholder="Un résumé attractif du voyage (max 200 caractères)..."
+                                            ></textarea>
+                                            <div className="flex justify-between items-center mt-1">
+                                                <p className="text-xs text-gray-500">Apparaît sur la carte du voyage</p>
+                                                <p className="text-xs text-gray-400">{newTrip.short_description.length}/200</p>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Description complète
+                                            </label>
+                                            <textarea
+                                                value={newTrip.description}
+                                                onChange={(e) => setNewTrip({ ...newTrip, description: e.target.value })}
+                                                rows="6"
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                                                placeholder="Description détaillée du voyage, itinéraire, activités incluses..."
+                                            ></textarea>
+                                            <p className="text-xs text-gray-500 mt-1">Décrivez le voyage en détail</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Section: Disponibilité */}
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                                            <span className="text-orange-600 font-bold">5</span>
+                                        </div>
+                                        Disponibilité
+                                    </h3>
+
+                                    <div className="pl-11">
+                                        <label className="flex items-center p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                                            <input
+                                                type="checkbox"
+                                                id="available"
+                                                checked={newTrip.available}
+                                                onChange={(e) => setNewTrip({ ...newTrip, available: e.target.checked })}
+                                                className="w-5 h-5 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                                            />
+                                            <div className="ml-3">
+                                                <span className="text-sm font-medium text-gray-900">Voyage disponible à la réservation</span>
+                                                <p className="text-xs text-gray-500 mt-1">Les clients pourront réserver ce voyage immédiatement</p>
+                                            </div>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div>
-                                <label className="block text-sm font-medium mb-2">Image principale *</label>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => setNewTrip({ ...newTrip, main_image: e.target.files[0] })}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium mb-2">Description courte</label>
-                                <textarea
-                                    value={newTrip.short_description}
-                                    onChange={(e) => setNewTrip({ ...newTrip, short_description: e.target.value })}
-                                    rows="2"
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                    placeholder="Résumé du voyage..."
-                                ></textarea>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium mb-2">Description complète</label>
-                                <textarea
-                                    value={newTrip.description}
-                                    onChange={(e) => setNewTrip({ ...newTrip, description: e.target.value })}
-                                    rows="4"
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                    placeholder="Détails du voyage..."
-                                ></textarea>
-                            </div>
-
-                            <div className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    id="available"
-                                    checked={newTrip.available}
-                                    onChange={(e) => setNewTrip({ ...newTrip, available: e.target.checked })}
-                                    className="mr-2 h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
-                                />
-                                <label htmlFor="available" className="text-sm font-medium text-gray-700">Voyage disponible</label>
-                            </div>
-
-                            <div className="flex space-x-4 pt-4">
+                        {/* Footer */}
+                        <div className="flex items-center justify-between p-6 border-t border-gray-200 bg-gray-50 rounded-b-2xl">
+                            <p className="text-sm text-gray-500">
+                                <span className="text-red-500">*</span> Champs obligatoires
+                            </p>
+                            <div className="flex space-x-3">
                                 <button
                                     onClick={() => setShowAddTripModal(false)}
-                                    className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300"
+                                    className="px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
                                 >
                                     Annuler
                                 </button>
                                 <button
                                     onClick={handleAddTrip}
-                                    className="flex-1 bg-orange-600 text-white py-3 rounded-lg font-semibold hover:bg-orange-700"
+                                    className="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:from-orange-700 hover:to-orange-600 transition-all shadow-md hover:shadow-lg"
                                 >
-                                    Ajouter
+                                    Ajouter le voyage
                                 </button>
                             </div>
                         </div>

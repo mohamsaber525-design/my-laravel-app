@@ -56,13 +56,21 @@ export const tripsAPI = {
 
   // Créer un nouveau trip (Admin)
   create: async (tripData) => {
-    const response = await api.post('/admin/trips', tripData);
+    const response = await api.post('/admin/trips', tripData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   },
 
   // Mettre à jour un trip (Admin)
   update: async (id, tripData) => {
-    const response = await api.post(`/admin/trips/${id}?_method=PUT`, tripData);
+    const response = await api.post(`/admin/trips/${id}?_method=PUT`, tripData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   },
 

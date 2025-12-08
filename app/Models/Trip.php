@@ -19,6 +19,7 @@ class Trip extends Model
         'duration_days',
         'location',       // ville / région
         'main_image',
+        'image',
         'available',      // boolean
     ];
 

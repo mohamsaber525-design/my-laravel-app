@@ -47,18 +47,3 @@ body {
   background-color: #f9fafb;
 }
 
-/* Full width containers */
-.full-width {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* Page container that spans full width */
-.page-container {
-  width: 100%;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-}
